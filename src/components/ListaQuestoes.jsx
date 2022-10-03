@@ -2,59 +2,60 @@ import { useState } from "react";
 import styled from "styled-components";
 import play from "../assets/img/seta_play.png";
 import virar from "../assets/img/seta_virar.png";
+import ContainerBotoes from "./ContainerBotoes";
 
 function CardQuestao(props) {
+  const { contador, setContador, imprimirImagem, setImprimirImagem } = props;
   const { id, questao, resposta } = props.quest;
   const [mudarPrimeira, setMudarPrimeira] = useState(false);
   const [mudarSegunda, setMudarSegunda] = useState(false);
   const [cor, setCor] = useState("");
+  const [icone, setIcone] = useState(play);
+  const [data, setData] = useState("flashcard-show-btn");
 
   return (
     <>
-      <PerguntaFechada desabilitar={mudarPrimeira ? "none" : ""}>
-        <p className={cor}>Pergunta {id}</p>
-        <img src={play} alt="play" onClick={() => setMudarPrimeira(true)} />
+      <PerguntaFechada
+        data-identifier="flashcard"
+        desabilitar={mudarPrimeira ? "none" : ""}
+      >
+        <p data-identifier="flashcard-index-item" className={cor}>
+          Pergunta {id}
+        </p>
+        <img
+          data-identifier={data}
+          src={icone}
+          alt={icone}
+          onClick={() => setMudarPrimeira(true)}
+        />
       </PerguntaFechada>
 
       {mudarPrimeira && (
         <Pergunta desabilitar={mudarSegunda ? "none" : ""}>
-          <p>{questao}</p>
-          <img src={virar} alt="virar" onClick={() => setMudarSegunda(true)} />
+          <p data-identifier="flashcard-question">{questao}</p>
+          <img
+            data-identifier="flashcard-turn-btn"
+            src={virar}
+            alt="virar"
+            onClick={() => setMudarSegunda(true)}
+          />
         </Pergunta>
       )}
 
       {mudarSegunda && (
         <Pergunta>
-          <p>{resposta}</p>
-          <ContainerBotoes>
-            <ButtonError
-              onClick={() => {
-                setMudarPrimeira(false);
-                setMudarSegunda(false);
-                setCor("vermelho");
-              }}
-            >
-              Não lembrei
-            </ButtonError>
-            <ButtonAlmost
-              onClick={() => {
-                setMudarPrimeira(false);
-                setMudarSegunda(false);
-                setCor("laranja");
-              }}
-            >
-              Quase não lembrei
-            </ButtonAlmost>
-            <ButtonZap
-              onClick={() => {
-                setMudarPrimeira(false);
-                setMudarSegunda(false);
-                setCor("verde");
-              }}
-            >
-              Zap!
-            </ButtonZap>
-          </ContainerBotoes>
+          <p data-identifier="flashcard-answer">{resposta}</p>
+          <ContainerBotoes
+            setMudarPrimeira={setMudarPrimeira}
+            setMudarSegunda={setMudarSegunda}
+            setCor={setCor}
+            setIcone={setIcone}
+            contador={contador}
+            setContador={setContador}
+            setData={setData}
+            imprimirImagem={imprimirImagem}
+            setImprimirImagem={setImprimirImagem}
+          />
         </Pergunta>
       )}
     </>
@@ -62,11 +63,24 @@ function CardQuestao(props) {
 }
 
 export default function ListaQuestoes(props) {
-  const { deckquestoes } = props;
+  const {
+    deckquestoes,
+    contador,
+    setContador,
+    imprimirImagem,
+    setImprimirImagem,
+  } = props;
   return (
     <>
       {deckquestoes.map((quest) => (
-        <CardQuestao key={quest.id} quest={quest} />
+        <CardQuestao
+          key={quest.id}
+          quest={quest}
+          contador={contador}
+          setContador={setContador}
+          imprimirImagem={imprimirImagem}
+          setImprimirImagem={setImprimirImagem}
+        />
       ))}
     </>
   );
@@ -135,40 +149,4 @@ const Pergunta = styled.div`
     bottom: 10px;
     right: 10px;
   }
-`;
-
-const ContainerBotoes = styled.div`
-  width: 100%;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-
-  button {
-    width: 80px;
-    height: 40px;
-    font-family: "Recursive";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #ffffff;
-    border-radius: 5px;
-    padding: 5px;
-  }
-`;
-
-const ButtonError = styled.button`
-  background-color: var(--cor-nao-lembrei);
-`;
-
-const ButtonAlmost = styled.button`
-  background-color: var(--cor-quase-nao-lembrei);
-`;
-
-const ButtonZap = styled.button`
-  background-color: var(--cor-zap);
 `;
