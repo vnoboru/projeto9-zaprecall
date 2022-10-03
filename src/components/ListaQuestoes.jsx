@@ -7,11 +7,12 @@ function CardQuestao(props) {
   const { id, questao, resposta } = props.quest;
   const [mudarPrimeira, setMudarPrimeira] = useState(false);
   const [mudarSegunda, setMudarSegunda] = useState(false);
+  const [cor, setCor] = useState("");
 
   return (
     <>
       <PerguntaFechada desabilitar={mudarPrimeira ? "none" : ""}>
-        <p>Pergunta {id}</p>
+        <p className={cor}>Pergunta {id}</p>
         <img src={play} alt="play" onClick={() => setMudarPrimeira(true)} />
       </PerguntaFechada>
 
@@ -25,6 +26,35 @@ function CardQuestao(props) {
       {mudarSegunda && (
         <Pergunta>
           <p>{resposta}</p>
+          <ContainerBotoes>
+            <ButtonError
+              onClick={() => {
+                setMudarPrimeira(false);
+                setMudarSegunda(false);
+                setCor("vermelho");
+              }}
+            >
+              Não lembrei
+            </ButtonError>
+            <ButtonAlmost
+              onClick={() => {
+                setMudarPrimeira(false);
+                setMudarSegunda(false);
+                setCor("laranja");
+              }}
+            >
+              Quase não lembrei
+            </ButtonAlmost>
+            <ButtonZap
+              onClick={() => {
+                setMudarPrimeira(false);
+                setMudarSegunda(false);
+                setCor("verde");
+              }}
+            >
+              Zap!
+            </ButtonZap>
+          </ContainerBotoes>
         </Pergunta>
       )}
     </>
@@ -63,6 +93,21 @@ const PerguntaFechada = styled.div`
     line-height: 19px;
     color: #333333;
   }
+
+  .vermelho {
+    color: var(--cor-nao-lembrei);
+    text-decoration: line-through;
+  }
+
+  .laranja {
+    color: var(--cor-quase-nao-lembrei);
+    text-decoration: line-through;
+  }
+
+  .verde {
+    color: var(--cor-zap);
+    text-decoration: line-through;
+  }
 `;
 
 const Pergunta = styled.div`
@@ -90,4 +135,40 @@ const Pergunta = styled.div`
     bottom: 10px;
     right: 10px;
   }
+`;
+
+const ContainerBotoes = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    width: 80px;
+    height: 40px;
+    font-family: "Recursive";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 5px;
+  }
+`;
+
+const ButtonError = styled.button`
+  background-color: var(--cor-nao-lembrei);
+`;
+
+const ButtonAlmost = styled.button`
+  background-color: var(--cor-quase-nao-lembrei);
+`;
+
+const ButtonZap = styled.button`
+  background-color: var(--cor-zap);
 `;
