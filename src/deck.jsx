@@ -37,7 +37,8 @@ const DECKQUESTOES = [
   {
     id: 8,
     questao: "Usamos estado (state) para __",
-    resposta: "Dizer para o React quais informações quando atualizadas devem renderizar a tela novamente",
+    resposta:
+      "Dizer para o React quais informações quando atualizadas devem renderizar a tela novamente",
   },
 ];
 

@@ -1,30 +1,48 @@
+import { useState } from "react";
 import styled from "styled-components";
 import play from "../assets/img/seta_play.png";
+import virar from "../assets/img/seta_virar.png";
 
 function CardQuestao(props) {
-    const {id} = props;
-    console.log(id);
+  const { id, questao, resposta } = props.quest;
+  const [mudarPrimeira, setMudarPrimeira] = useState(false);
+  const [mudarSegunda, setMudarSegunda] = useState(false);
+
   return (
-    <PerguntaFechada>
-      <p>Pergunta {id}</p>
-      <img src={play} alt="seta_play" />
-    </PerguntaFechada>
+    <>
+      <PerguntaFechada desabilitar={mudarPrimeira ? "none" : ""}>
+        <p>Pergunta {id}</p>
+        <img src={play} alt="play" onClick={() => setMudarPrimeira(true)} />
+      </PerguntaFechada>
+
+      {mudarPrimeira && (
+        <Pergunta desabilitar={mudarSegunda ? "none" : ""}>
+          <p>{questao}</p>
+          <img src={virar} alt="virar" onClick={() => setMudarSegunda(true)} />
+        </Pergunta>
+      )}
+
+      {mudarSegunda && (
+        <Pergunta>
+          <p>{resposta}</p>
+        </Pergunta>
+      )}
+    </>
   );
 }
 
 export default function ListaQuestoes(props) {
   const { deckquestoes } = props;
-  console.log(deckquestoes, "lista");
   return (
     <>
       {deckquestoes.map((quest) => (
-        <CardQuestao key={quest.id} id={quest.id}/>
+        <CardQuestao key={quest.id} quest={quest} />
       ))}
     </>
   );
 }
 
-const PerguntaFechada = styled.button`
+const PerguntaFechada = styled.div`
   width: 300px;
   height: 55px;
   background-color: #ffffff;
@@ -35,6 +53,7 @@ const PerguntaFechada = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  display: ${(props) => props.desabilitar};
 
   p {
     font-family: "Recursive";
@@ -43,5 +62,32 @@ const PerguntaFechada = styled.button`
     font-size: 16px;
     line-height: 19px;
     color: #333333;
+  }
+`;
+
+const Pergunta = styled.div`
+  width: 300px;
+  margin: 12px;
+  padding: 15px;
+  min-height: 100px;
+  background: #ffffd5;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  font-family: "Recursive";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #333333;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  display: ${(props) => props.desabilitar};
+
+  img {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
   }
 `;

@@ -1,17 +1,20 @@
 import styled from "styled-components";
-import Header from "./Header";
 import ListaQuestoes from "./ListaQuestoes";
-import Footer from "./Footer"
+import Header from "./Header";
+import Footer from "./Footer";
 import DECKQUESTOES from "../deck";
 
 export default function Main() {
-  
+
   return (
     <>
       <ContainerPrincipal>
         <Header />
-        <ListaQuestoes deckquestoes={DECKQUESTOES}/>
+        <ListaQuestoes
+          deckquestoes={DECKQUESTOES}
+        />
       </ContainerPrincipal>
+      <Footer/>
     </>
   );
 }
